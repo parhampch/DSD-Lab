@@ -1,0 +1,62 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{HomeWorkTemplate}
+\usepackage{circuitikz}
+\usepackage[shortlabels]{enumitem}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{xepersian}
+\settextfont{XB Niloofar}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{circuits.logic.US}
+\usepackage{changepage}
+\newcounter{problemcounter}
+\newcounter{subproblemcounter}
+\setcounter{problemcounter}{1}
+\setcounter{subproblemcounter}{1}
+\newcommand{\problem}[1]
+{
+	\subsection*{
+		پرسش
+		\arabic{problemcounter} 
+		\stepcounter{problemcounter}
+		\setcounter{subproblemcounter}{1}
+		#1
+	}
+}
+\newcommand{\subproblem}{
+	\textbf{\harfi{subproblemcounter})}\stepcounter{subproblemcounter}
+}
+
+
+\begin{document}
+\handout
+{هوش مصنوعی}
+{دکتر سیاوش بیات سرمدی}
+{نیم‌سال اول 1400\lr{-}1401}
+{اطلاعیه}
+{پرهام چاوشیان}
+{98100118}
+ {گزارش آزمایش اول}
+برای بررسی بخش‌پذیری بر 3 از قاعده زیر استفاده شده است:
+\begin{equation*}
+\overline{abcd}\,mod\,3\,=\,(a\,mod\,3)\,+\,(b\,mod\,3)\,+\,(c\,mod\,3)\,+\,(d\,mod\,3)
+\end{equation*}
+برای استفاده از این قاعده ماژولی با نام
+$one\_bcd\_3\_checker$
+نوشته شده است که ورودی یه عدد 4بیتی $BCD$ است و در خروجی باقی‌مانده آن عدد بر 3 را می‌دهد. علت 4 بیتی بودن خروجی انجام راحتتر عملیات جمع در ماژول‌های دیگر است. روابط جدول کارنو از جدول صحت و جدول کارنوهای زیر آمده‌اند:\\
+
+برای بررسی بخش‌پذیری بر 11 از قاعده زیر استفاده شده است:
+\begin{equation*}
+\overline{abcd}\,mod\,11\,=\, (b\,+d\,-\,a\,-\,c)\, mod\,11
+\end{equation*}
+باتوجه به محدوده اعداد به سادگی می‌توان فهمید که اگر
+$(b\,+d\,-\,a\,-\,c)\,=\,-11\,\vee \,0,\vee \,11$
+باشد عدد بر 11 بخش پذیر است و در غیر این صورت بخش‌پدیر نیست. به جای تفریق کردن ما مقادیر
+$x\,=\,b\,+\,d$
+و
+$y\,=\,a\,+\,c$
+را محاسبه می‌کنیم و سپس به کمک یگ 
+\end{document}
