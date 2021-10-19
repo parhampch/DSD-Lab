@@ -4,11 +4,12 @@ module room (
     input ent,
     input T,
     input clk,
+    input clr,
     output reg open,
-    output reg close);
+    output reg close,
+    output [3:0] number);
 
-    reg en, up, clr;
-    wire [3:0] number;
+    reg en, up;
 
     counter people (en , up, clr, clk, number);
 

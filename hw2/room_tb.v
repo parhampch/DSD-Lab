@@ -4,12 +4,18 @@ module room_tb;
     reg out;
     reg T;
     reg clk;
+    reg clr;
     wire open;
     wire close;
+    wire number;
 
-    room ins (in, out, ent, T, clk, open, close);
+    room ins (in, out, ent, T, clk, clr, open, close, number);
 
-    
+    initial 
+    begin
+        clk = 0;
+        forever #5 clk = ~clk;   
+    end    
 
     initial 
     begin
@@ -17,8 +23,8 @@ module room_tb;
         ent = 1;
         out = 0;
         T = 1;
-        clk = 0;
-		  forever #10 clk = ~clk;
+        clr = 0;
+        clr = 1;
         #20
         in = 0;
         #20
