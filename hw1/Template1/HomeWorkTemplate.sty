@@ -28,7 +28,7 @@
 
 %define commands and enviroments
 
-\newcommand{\heading}[7]
+\newcommand{\heading}[8]
 {
    %set paging
    \renewcommand{\thepage}{\arabic{page}}
@@ -38,6 +38,7 @@
 \huge #1 && \multirow{3}{*}[0.6em]{\includegraphics[scale=0.13]{sharif-logo.png}} \\ [1em]
 \large#4 &&\\ [0.7em]
 \large#3&& #2 \\ [0.5em]
+\large#8&&  \\ [0.5em]
 \hline
 &&\\[-0.7em]
 \multicolumn{3}{c}{\large \textbf{#7}}\\[0.5em]
@@ -51,10 +52,10 @@
 }
 
 
-\newcommand{\handout}[7]{\heading
+\newcommand{\handout}[8]{\heading
 {#1}{دانشکده مهندسی کامپیوتر}
 {مدرس: #2}
-{#3}{نام و نام‌خانوادگی: #5}{شماره دانشجویی: #6}{#7}
+{#3}{نام و نام‌خانوادگی: #5}{شماره دانشجویی: #6}{#7}{دستیار آموزشی: #8}
 }
 
 
