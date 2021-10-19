@@ -9,18 +9,16 @@ module room_tb;
 
     room ins (in, out, ent, T, clk, open, close);
 
-    in = 1;
-    ent = 1;
-    out = 0;
-    T = 1;
-
-
-    forever clk = #5 ~clk;
+    
 
     initial 
     begin
-        #10
-        ent = 0;
+        in = 1;
+        ent = 1;
+        out = 0;
+        T = 1;
+        clk = 0;
+		  forever #10 clk = ~clk;
         #20
         in = 0;
         #20

@@ -4,11 +4,11 @@ module room (
     input ent,
     input T,
     input clk,
-    output open,
-    output close);
+    output reg open,
+    output reg close);
 
-    wire en, up, clr;
-    wire [3:0] number,
+    reg en, up, clr;
+    wire [3:0] number;
 
     counter people (en , up, clr, clk, number);
 
@@ -17,11 +17,15 @@ module room (
         if (T && in && ent && number < 15 ) 
         begin
             if (out)
+            begin
                 en <= 0;
+                open <= 0;
+            end
             else
             begin
                 en <= 1;
                 up <= 1;
+                open <= 1;
             end
             close <= 0;
         end
@@ -33,11 +37,13 @@ module room (
                 close <= 1;
             else
                 close <= 0;
+            open <= 0;
         end    
         else
         begin
            en <= 0;
            close <= 0; 
+           open <= 0;
         end
     end
 
