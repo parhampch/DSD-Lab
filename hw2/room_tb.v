@@ -7,34 +7,38 @@ module room_tb;
     reg clr;
     wire open;
     wire close;
-    wire number;
+    wire [3:0] number;
 
     room ins (in, out, ent, T, clk, clr, open, close, number);
 
     initial 
     begin
-        clk = 0;
+        clk = 1;
         forever #5 clk = ~clk;   
     end    
 
     initial 
     begin
+        clr = 0;
         in = 1;
         ent = 1;
         out = 0;
         T = 1;
-        clr = 0;
-        clr = 1;
-        #20
+		  #10
+		  clr = 1;
+        #50
         in = 0;
-        #20
+        #50
         out = 1;
-        #5
+        #100
         in = 1;
         ent = 1;
-        #30
+		  out = 0;
+        #50
+		  out = 1;
+		  #50
         T = 0;
-        #10
+        #50
         out = 0;        
     end
 

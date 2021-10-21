@@ -12,40 +12,16 @@ module room (
     reg en, up;
 
     counter people (en , up, clr, clk, number);
-
-    always @(posedge clk) 
+    always @*
     begin
-        if (T && in && ent && number < 15 ) 
-        begin
-            if (out)
-            begin
-                en <= 0;
-                open <= 0;
-            end
-            else
-            begin
-                en <= 1;
-                up <= 1;
-                open <= 1;
-            end
-            close <= 0;
-        end
-        else if (out) 
-        begin
-            en <= 1;
-            up <= 0;
-            if (number == 0)
-                close <= 1;
-            else
-                close <= 0;
-            open <= 0;
-        end    
-        else
-        begin
-           en <= 0;
-           close <= 0; 
-           open <= 0;
-        end
+        up = T & in & ent & (number < 15 );
+        en = up ^ out;
+    end
+
+    always @(posedge clk)
+    begin
+        open <= up;
+        close <= (number == 0) & (~(up & en));
     end
 
     
@@ -71,7 +47,10 @@ module counter (
                 if (up)
                     number <= number + 1;
                 else
-                    number <= number - 1;
+                    if (number == 0)
+                        number <= number;
+                    else
+                        number <= number - 1;
             end
         end 
     end
