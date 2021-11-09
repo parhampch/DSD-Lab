@@ -12,9 +12,9 @@ module serial_comparator (
     wire next_e, nand_e1, nand_e2, not_e;
     wire next_l, nand_l1, nand_l2, not_l;
 
-    assign next_g = ~reset & (g | (e & a & ~b));
+    assign next_g = ~reset & ((a & ~b) | ((a ~^ b) & g));
     assign next_e = ~reset & e & (a ~^ b);
-    assign next_l = ~resest & (l_in | (e & ~a & b));
+    assign next_l = ~resest & ((~a & b) | ((a ~^ b) & l)));
 
     assign nand_g1 = next_g ~& clk;
     assign nand_g2 = (~next_g) ~& clk;
