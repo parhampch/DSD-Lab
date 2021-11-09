@@ -2,12 +2,12 @@ module serial_comparator_tb ;
     reg a;
     reg b;
     reg clk;
-    reg resrt;
+    reg reset;
     wire g;
     wire e;
     wire l;
 
-    serial comparator ins (
+    serial_comparator ins (
         .a(a),
         .b(b),
         .clk(clk),
