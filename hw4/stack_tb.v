@@ -1,45 +1,42 @@
-module stack_tb ;
+module stack (
+    input clk,
+    input RstN,
+    input [4:0] Data_In,
+    input Push,
+    input Pop,
+    output reg [4:0] Data_Out,
+    output reg Full,
+    output reg Empty);
 
-    reg clk;
-    reg RstN;
-    reg [4:0] Data_In;
-    reg Push;
-    reg Pop;
-    wire [4:0] Data_Out;
-    wire Full;
-    wire Empty;
+    reg [4:0] memory [9:0];
+    reg [4:0] pointer;
 
-    stack ins (
-        .clk(clk),
-        .RstN(RstN),
-        .Data_In(Data_In),
-        .Push(Push),
-        .Pop(Pop),
-        .Data_Out(Data_Out),
-        .Full(Full),
-        .Empty(Empty)
-    );
-
-    initial 
+    always @(posedge clk or negedge RstN) 
     begin
-        clk = 1;
-        forever #5 clk = ~clk;   
-    end    
-
-    initial begin
-        RstN = 0;
-        Pop = 0;
-        # 10
-        RstN = 1;
-        #10
-        Push = 1;
-        Data_In = 5'b10101;
-        # 10
-        Push = 1;
-        Data_In = 5'b11111;
-        # 10
-        Push = 0;
-        Pop = 1;
+        if (!RstN)
+        begin
+            pointer <= 0;
+            Empty <= 0;
+            Full <= 0;
+        end
+        else 
+        begin
+            if(Push & ~Full)
+            begin
+                Empty <= 1;
+                Full <= ~(pointer < 9);
+                memory[pointer] <= Data_In;
+                pointer <= pointer + 1;
+            end
+            else if (Pop & Empty) 
+            begin
+                Full <= 0;
+                Empty <= (pointer > 1);
+                Data_Out <= memory[pointer - 1];
+                pointer = pointer - 1;
+            end
+            
+        end
     end
     
 endmodule
