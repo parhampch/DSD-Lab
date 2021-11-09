@@ -4,9 +4,9 @@ module stack (
     input [4:0] Data_In,
     input Push,
     input Pop,
-    output [4:0] Data_Out,
-    output Full,
-    output Empty);
+    output reg [4:0] Data_Out,
+    output reg Full,
+    output reg Empty);
 
     reg [4:0] memory [9:0];
     reg [4:0] pointer;
@@ -21,18 +21,18 @@ module stack (
         end
         else 
         begin
-            if(push & ~Full)
+            if(Push & ~Full)
             begin
                 Empty <= 1;
                 Full <= ~(pointer < 9);
-                memory[pointer] <= Data_in;
+                memory[pointer] <= Data_In;
                 pointer <= pointer + 1;
             end
             else if (Pop & Empty) 
             begin
                 Full <= 0;
-                Empty <= (pointer > 1)
-                Data_out <= memory[pointer - 1];
+                Empty <= (pointer > 1);
+                Data_Out <= memory[pointer - 1];
                 pointer = pointer - 1;
             end
             

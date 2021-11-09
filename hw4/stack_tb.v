@@ -27,9 +27,11 @@ module stack_tb ;
     end    
 
     initial begin
-        reset = 0;
-        Pop = 0
+        RstN = 0;
+        Pop = 0;
         # 10
+        RstN = 1;
+        #10
         Push = 1;
         Data_In = 5'b10101;
         # 10
