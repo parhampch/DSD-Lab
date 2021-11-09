@@ -1,10 +1,10 @@
 module stack (
     input clk,
     input RstN,
-    input Data_In,
+    input [4:0] Data_In,
     input Push,
     input Pop,
-    output Data_Out,
+    output [4:0] Data_Out,
     output Full,
     output Empty);
 
