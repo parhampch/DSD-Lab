@@ -4,7 +4,7 @@ module UART (
     input reset,
     input send,
     output reg done,
-    output bit);
+    output reg bit);
 
     localparam IDLE = 4'b000;
     localparam START = 4'b001;
@@ -68,6 +68,67 @@ module UART (
             next_state = IDLE;
         end
             
+        endcase    
+    end
+endmodule
+
+module receiver (
+    input clk;
+    input bit,
+    output reg [6:0] out,
+    output reg correct,
+    output reg done);
+
+    localparam START = 4'b00;
+    localparam PARITY = 4'b01;
+    localparam BUSY = 4'b10;
+    localparam STOP = 4'b11;
+
+    reg [1:0] current_state = START;
+    reg [1:0] next_state;
+    reg [2:0] index;
+    reg [6:0] data;
+    reg parity;
+
+    always @(posedge clk) 
+    begin
+        current_state <= next_state;
+    end
+
+    always @* 
+    begin
+        done = 0;
+        correct = 0;
+        case (current_state)
+            START:
+            begin
+                index = 0;
+                if (bit)
+                    next_state = PARITY;    
+                else
+                    next_state = START; 
+            end
+            PARITY:
+            begin
+                next_state = BUSY;
+                parity = bit;
+            end
+            BUSY:
+            begin
+                data[index] = bit;
+                index = index + 1;
+                if (index == 7)
+                    next_state = STOP;
+                else
+                    next_state = BUSY;
+            end
+            STOP:
+            begin
+                done = 1;
+                correct = parity == (^data);
+                out = data;
+                next_state = START;
+            end
         endcase    
     end
 
