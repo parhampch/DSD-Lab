@@ -4,7 +4,7 @@ module UART (
     input reset,
     input send,
     output reg done,
-    output reg bit);
+    output reg my_bit);
 
     localparam IDLE = 4'b000;
     localparam START = 4'b001;
@@ -21,60 +21,60 @@ module UART (
         if (!reset)
         begin
             current_state <= IDLE;
-            bit <= 0;
+            my_bit <= 0;
             done <= 0;
             index = 0;
         end
-        else 
-            current_state <= next_state;
-    end
-
-    always @* 
-    begin
+		  else
+		  begin
         done = 0;
         case (current_state)
         IDLE:
         begin
-            bit = 0;
+            my_bit = 0;
             index = 0;
             if (send)
-                next_state = START;
+                current_state = START;
             else
-                next_state = IDLE;
+                current_state = IDLE;
         end
         START:
         begin
-            bit = 1;
-            next_state = PARITY;            
+            my_bit = 1;
+            current_state = PARITY;            
         end
-        PARTITY:
+        PARITY:
         begin
-            bit = ^data;
-            next_state = BUSY;
+            my_bit = ^data;
+            current_state = BUSY;
         end
         BUSY:
         begin
-            bit = data[index];
+            my_bit = data[index];
             index = index + 1;
-            if (index == 7):
-                next_state = STOP;
+            if (index == 7)
+                current_state = STOP;
             else
-                next_state = BUSY;
+                current_state = BUSY;
         end
         STOP:
         begin
-            bit = 0;
+            my_bit = 0;
             done = 1;
-            next_state = IDLE;
+            current_state = IDLE;
         end
             
         endcase    
     end
+		  
+    end
+    
 endmodule
 
 module receiver (
-    input clk;
-    input bit,
+    input clk,
+    input my_bit,
+	 input reset,
     output reg [6:0] out,
     output reg correct,
     output reg done);
@@ -85,17 +85,19 @@ module receiver (
     localparam STOP = 4'b11;
 
     reg [1:0] current_state = START;
-    reg [1:0] next_state;
     reg [2:0] index;
     reg [6:0] data;
     reg parity;
 
-    always @(posedge clk) 
-    begin
-        current_state <= next_state;
-    end
-
-    always @* 
+    always @(posedge clk or negedge reset)
+	 if (!reset)
+	 begin
+		current_state = START;
+		index = 0;
+		done = 0;
+		correct = 0;
+	 end
+	 else
     begin
         done = 0;
         correct = 0;
@@ -103,31 +105,31 @@ module receiver (
             START:
             begin
                 index = 0;
-                if (bit)
-                    next_state = PARITY;    
+                if (my_bit)
+                    current_state = PARITY;    
                 else
-                    next_state = START; 
+                    current_state = START; 
             end
             PARITY:
             begin
-                next_state = BUSY;
-                parity = bit;
+                current_state = BUSY;
+                parity = my_bit;
             end
             BUSY:
             begin
-                data[index] = bit;
+                data[index] = my_bit;
                 index = index + 1;
                 if (index == 7)
-                    next_state = STOP;
+                    current_state = STOP;
                 else
-                    next_state = BUSY;
+                    current_state = BUSY;
             end
             STOP:
             begin
                 done = 1;
                 correct = parity == (^data);
                 out = data;
-                next_state = START;
+                current_state = START;
             end
         endcase    
     end
